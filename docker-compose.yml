@@ -1,52 +1,45 @@
 version: '2'
 services:
+    postgredb:
+        image: postgres:9.6.5
+        environment:
+            - POSTGRES_USER=baswara
+            - POSTGRES_PASSWORD=Password1!
+        volumes:
+            - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
     gateway-app:
         image: gateway
         environment:
             - SPRING_PROFILES_ACTIVE=prod,swagger
             - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
             - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
-            - SPRING_DATASOURCE_URL=jdbc:postgresql://gateway-postgresql:5432/gateway
+            - SPRING_DATASOURCE_URL=jdbc:postgresql://postgredb:5432/gateway
             - JHIPSTER_SLEEP=30
-            - JHIPSTER_REGISTRY_PASSWORD=loot1234
+            - JHIPSTER_REGISTRY_PASSWORD=Password1!
         ports:
             - 8080:8080
-    gateway-postgresql:
-        image: postgres:9.6.5
-        environment:
-            - POSTGRES_USER=gateway
-            - POSTGRES_PASSWORD=
-    
+
     metapage-app:
         image: metapage
         environment:
             - SPRING_PROFILES_ACTIVE=prod,swagger
             - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
             - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
-            - SPRING_DATASOURCE_URL=jdbc:postgresql://metapage-postgresql:5432/metapage
+            - SPRING_DATASOURCE_URL=jdbc:postgresql://postgredb:5432/metapage
             - JHIPSTER_SLEEP=30
-            - JHIPSTER_REGISTRY_PASSWORD=loot1234
-    metapage-postgresql:
-        image: postgres:9.6.5
-        environment:
-            - POSTGRES_USER=metapage
-            - POSTGRES_PASSWORD=
-    
+            - JHIPSTER_REGISTRY_PASSWORD=Password1!
+
     uaa-app:
         image: uaa
         environment:
             - SPRING_PROFILES_ACTIVE=prod,swagger
             - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
             - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
-            - SPRING_DATASOURCE_URL=jdbc:postgresql://uaa-postgresql:5432/uaa
+            - SPRING_DATASOURCE_URL=jdbc:postgresql://postgredb:5432/uaa
             - JHIPSTER_SLEEP=30
-            - JHIPSTER_REGISTRY_PASSWORD=loot1234
-    uaa-postgresql:
-        image: postgres:9.6.5
-        environment:
-            - POSTGRES_USER=uaa
-            - POSTGRES_PASSWORD=
-    
+            - JHIPSTER_REGISTRY_PASSWORD=Password1!
+
     jhipster-registry:
         extends:
             file: jhipster-registry.yml
